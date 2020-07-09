@@ -1,6 +1,6 @@
 const path = require('path');
 // const reviewList = require(path.join(__dirname, './sampleData.js'));
-const reviewList = require('../sampleData.js');
+const reviewData = require('../sampleData.js');
 
 // get a review list
 const getReviewList = (req, res) => {
@@ -15,7 +15,7 @@ const getReviewList = (req, res) => {
     product: product_id,
     page,
     count,
-    results: reviewList,
+    results: reviewData.reviewList,
   });
   // }
 };
@@ -31,9 +31,9 @@ const getReviewMetadata = (req, res) => {
   console.log('got review metadata');
   res.status(200).json({
     product: product_id,
-    ratings: {},
-    recommended: {},
-    characteristics: {},
+    ratings: reviewData.reviewMetadata.ratings,
+    recommended: reviewData.reviewMetadata.recommended,
+    characteristics: reviewData.reviewMetadata.characteristics,
   });
   // }
 };
@@ -41,13 +41,17 @@ const getReviewMetadata = (req, res) => {
 // add a review for a product
 const addProductReview = (req, res) => {
   console.log(req.params);
-  const { product_id, rating, summary, body, recommend, name, email, photos, characteristics } = req.params;
+  console.log(req.body);
+  const { product_id } = req.params;
+  const { rating, summary, body, recommend, name, email, photos, characteristics } = req.params;
   // if (err) {
   //   console.log('error adding a product review');
   //   res.status(404);
   // } else {
   console.log('added product review');
-  res.status(201);
+  res.status(201).json({
+    product: product_id,
+  });
   // }
 };
 
@@ -60,7 +64,9 @@ const markReviewHelpful = (req, res) => {
   //   res.status(404);
   // } else {
   console.log('marked review as helpful');
-  res.status(204);
+  res.status(204).json({
+    review: review_id,
+  });
   // }
 };
 
@@ -72,8 +78,10 @@ const reportReview = (req, res) => {
   //   console.log('error reporting review');
   //   res.status(404);
   // } else {
-  console.log('error reporting review');
-  res.status(204);
+  console.log('reported review');
+  res.status(204).json({
+    review: review_id,
+  });
   // }
 };
 
