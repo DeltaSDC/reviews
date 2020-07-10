@@ -1,23 +1,26 @@
 const path = require('path');
 // const reviewList = require(path.join(__dirname, './sampleData.js'));
 const reviewData = require('../sampleData.js');
+const model = require('../models/models.js');
 
 // get a review list
 const getReviewList = (req, res) => {
   console.log(req.params);
   const { product_id, page, count, sort } = req.params;
-  // if (err) {
-  //   console.log('error getting review list');
-  //   res.status(404);
-  // } else {
-  console.log('got review list');
-  res.status(200).json({
-    product: product_id,
-    page,
-    count,
-    results: reviewData.reviewList,
+  model.getReviewList(product_id, (err, results) => {
+    if (err) {
+      console.log('error getting review list');
+      res.status(404);
+    } else {
+      console.log('got review list', results);
+      res.status(200).json({
+        product: product_id,
+        page,
+        count,
+        results,
+      });
+    }
   });
-  // }
 };
 
 // get review metadata

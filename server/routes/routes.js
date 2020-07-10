@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const controller = require('../controllers/controller.js');
+const controller = require('../controllers/controllers.js');
 
 // set up routes
 router.get('/:product_id/list', controller.getReviewList);
