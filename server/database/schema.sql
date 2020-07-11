@@ -14,7 +14,7 @@ CREATE TABLE reviews (
  recommend BOOLEAN,
  response VARCHAR(1000),
  body VARCHAR(1000),
- review_date TIMESTAMP,
+ review_date TIMESTAMP WITH TIME ZONE,
  reviewer_name VARCHAR(60),
  reviewer_email VARCHAR(60),
  verified BOOLEAN,

@@ -1,42 +1,8 @@
 const faker = require('faker');
 const fs = require('fs');
 const path = require('path');
+
 let time = new Date();
-// let review_id;
-
-// generate characteristics_reviews join table
-// for review ids 1-10 2 chars, 10-20 3 chars
-// chars have ids 1-6
-// const chars = ['Size', 'Width', 'Comfort', 'Quality', 'Length', 'Fit'];
-// const generateCharSize = () => {
-//   const rating = Math.floor(Math.random() * 6);
-//   return `${review_id},${1},${rating}\n`;
-// };
-
-// const generateCharWidth = () => {
-//   const rating = Math.floor(Math.random() * 6);
-//   return `${review_id},${2},${rating}\n`;
-// };
-
-// const generateCharComfort = () => {
-//   const rating = Math.floor(Math.random() * 6);
-//   return `${review_id},${3},${rating}\n`;
-// };
-
-// const generateCharQuality = () => {
-//   const rating = Math.floor(Math.random() * 6);
-//   return `${review_id},${4},${rating}\n`;
-// };
-
-// const generateCharLength = () => {
-//   const rating = Math.floor(Math.random() * 6);
-//   return `${review_id},${5},${rating}\n`;
-// };
-
-// const generateCharFit = () => {
-//   const rating = Math.floor(Math.random() * 6);
-//   return `${review_id},${6},${rating}\n`;
-// };
 
 const seedDirectory = path.join(__dirname, 'joinChar.csv');
 const writeStream = fs.createWriteStream(seedDirectory);
