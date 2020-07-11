@@ -1,5 +1,5 @@
 const faker = require('faker');
-const csv = require('fast-csv');
+// const csv = require('fast-csv');
 const fs = require('fs');
 
 // generate reviews, need 10 million
@@ -25,40 +25,72 @@ const generateReview = () => {
   return `${rating},${summary},${recommend},${response},${body},${review_date},${reviewer_name},${reviewer_email},${verified},${helpfulness_yes},${helpfulness_no},${product_id}\n`;
 };
 
-console.log(generateReview());
+// console.log(generateReview());
+
+const writeStream = fs.createWriteStream('reviews.csv');
+
+const startWriting = (writeStream, encoding, done) => {
+  let i = 100;
+  function writing() {
+    let canWrite = true;
+    do {
+      i--
+      let review = generateReview();
+      if (i === 0) {
+        writeStream.write(review, encoding, done);
+      } else {
+        writeStream.write(review, encoding);
+      }
+    } while (i > 0 && canWrite) {
+      if (i > 0 && !canWrite) {
+        writeStream.once('drain', writing);
+      }
+    }
+  }
+  writing();
+};
+
+// write header line before invoking
+writeStream.write(`rating,summary,recommend,response,body,review_date,reviewer_name,reviewer_email,verified,helpfulness_yes,helpfulness_no,product_id\n`, 'utf-8');
+
+// invoke startWriting and pass in callback
+startWriting(writeStream, 'utf-8', () => {
+  writeStream.end();
+});
+
 // photos already generated from csv file, load directly from there
 // characteristics table only has 6 items, created it in root directory
 
 // generate characteristics_reviews join table
 // for review ids 1-10 2 chars, 10-20 3 chars
-const chars = ['Size', 'Width', 'Comfort', 'Quality', 'Length', 'Fit'];
-let review_id = 1;
-const generateCharSize = () => {
-  const rating = Math.floor(Math.random() * 6);
-  return `${review_id},${1},${rating}\n`;
-};
+// const chars = ['Size', 'Width', 'Comfort', 'Quality', 'Length', 'Fit'];
+// let review_id = 1;
+// const generateCharSize = () => {
+//   const rating = Math.floor(Math.random() * 6);
+//   return `${review_id},${1},${rating}\n`;
+// };
 
-const generateCharWidth = () => {
-  const rating = Math.floor(Math.random() * 6);
-  return `${review_id},${2},${rating}\n`;
-};
+// const generateCharWidth = () => {
+//   const rating = Math.floor(Math.random() * 6);
+//   return `${review_id},${2},${rating}\n`;
+// };
 
-const generateCharComfort = () => {
-  const rating = Math.floor(Math.random() * 6);
-  return `${review_id},${3},${rating}\n`;
-};
+// const generateCharComfort = () => {
+//   const rating = Math.floor(Math.random() * 6);
+//   return `${review_id},${3},${rating}\n`;
+// };
 
-const generateCharQuality = () => {
-  const rating = Math.floor(Math.random() * 6);
-  return `${review_id},${4},${rating}\n`;
-};
+// const generateCharQuality = () => {
+//   const rating = Math.floor(Math.random() * 6);
+//   return `${review_id},${4},${rating}\n`;
+// };
 
-const generateCharLength = () => {
-  const rating = Math.floor(Math.random() * 6);
-  return `${review_id},${5},${rating}\n`;
-};
+// const generateCharLength = () => {
+//   const rating = Math.floor(Math.random() * 6);
+//   return `${review_id},${5},${rating}\n`;
+// };
 
-const generateCharFit = () => {
-  const rating = Math.floor(Math.random() * 6);
-  return `${review_id},${6},${rating}\n`;
-};
+// const generateCharFit = () => {
+//   const rating = Math.floor(Math.random() * 6);
+//   return `${review_id},${6},${rating}\n`;
+// };
