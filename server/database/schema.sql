@@ -42,4 +42,4 @@ CREATE TABLE reviews_characteristics (
 );
 
 -- sample data
-INSERT INTO reviews (rating, summary, recommend, response, body, review_date, reviewer_name, reviewer_email, verified, helpfulness_yes, helpfulness_no, product_id) VALUES (3, 'I am enjoying wearing these shades', false, '', 'Comfortable and practical.', '2019-04-14T00:00:00.000Z', 'shortandsweeet', 'shortandsweet@yahoo.com', true, 0, 0, 10);
+-- INSERT INTO reviews (rating, summary, recommend, response, body, review_date, reviewer_name, reviewer_email, verified, helpfulness_yes, helpfulness_no, product_id) VALUES (3, 'I am enjoying wearing these shades', false, '', 'Comfortable and practical.', '2019-04-14T00:00:00.000Z', 'shortandsweeet', 'shortandsweet@yahoo.com', true, 0, 0, 10);

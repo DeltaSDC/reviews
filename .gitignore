@@ -104,5 +104,6 @@ dist
 .tern-port
 
 # Dataset
-* .csv
+*.csv
+
 
