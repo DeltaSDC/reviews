@@ -10,8 +10,8 @@ const writeStream = fs.createWriteStream(seedDirectory);
 const startWriting = (writer, encoding, done) => {
   console.log('started writing data', time.toTimeString());
   function writingSize() {
-    let i = 199;
-    let review_id = 1;
+    let i = 100;
+    let review_id = 0;
     let canWrite = true;
     do {
       i -= 1;
@@ -30,8 +30,8 @@ const startWriting = (writer, encoding, done) => {
   }
   // write width
   function writingWidth() {
-    let i = 49;
-    let review_id = 1;
+    let i = 50;
+    let review_id = 0;
     let canWrite = true;
     do {
       i -= 1;
@@ -50,8 +50,8 @@ const startWriting = (writer, encoding, done) => {
   }
   // write Comfort
   function writingComfort() {
-    let i = 24;
-    let review_id = 1;
+    let i = 25;
+    let review_id = 0;
     let canWrite = true;
     do {
       i -= 1;
@@ -70,8 +70,8 @@ const startWriting = (writer, encoding, done) => {
   }
   // write Quality
   function writingQuality() {
-    let i = 24;
-    let review_id = 1;
+    let i = 25;
+    let review_id = 0;
     let canWrite = true;
     do {
       i -= 1;
@@ -90,8 +90,8 @@ const startWriting = (writer, encoding, done) => {
   }
   // write Length
   function writingLength() {
-    let i = 24;
-    let review_id = 1;
+    let i = 10;
+    let review_id = 0;
     let canWrite = true;
     do {
       i -= 1;
@@ -110,8 +110,8 @@ const startWriting = (writer, encoding, done) => {
   }
   // write Fit
   function writingFit() {
-    let i = 9;
-    let review_id = 1;
+    let i = 10;
+    let review_id = 0;
     let canWrite = true;
     do {
       i -= 1;

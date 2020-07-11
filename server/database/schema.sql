@@ -24,9 +24,9 @@ CREATE TABLE reviews (
 );
 
 CREATE TABLE photos (
- photo_id SERIAL PRIMARY KEY,
- photo_url TEXT,
- review_id INTEGER REFERENCES reviews
+ id SERIAL PRIMARY KEY,
+ review_id INTEGER REFERENCES reviews,
+ url TEXT
 );
 
 CREATE TABLE characteristics (
