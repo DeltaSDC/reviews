@@ -16,17 +16,17 @@ const generateReview = () => {
   const recommend = (booleanGenerator === 1 ? 'true' : 'false');
   const response = (booleanGenerator === 1 ? faker.lorem.sentence(5) : '');
   const body = faker.lorem.sentences(5);
-  let review_date = faker.date.between('2020-05-01', '2020-07-09');
-  review_date = review_date.toString().slice(0, -33).concat('MDT');
+  let date = faker.date.between('2020-05-01', '2020-07-09');
+  date = date.toString().slice(0, -33).concat('MDT');
   const reviewer_name = faker.internet.userName();
   const reviewer_email = faker.internet.email();
   const verified = (booleanGenerator === 1 ? 'true' : 'false');
-  const helpfulness_yes = Math.floor(Math.random() * 501);
+  const helpfulness = Math.floor(Math.random() * 501);
   const helpfulness_no = Math.floor(Math.random() * 51);
   const product_id = Math.floor(Math.random() * 20) + 1;
 
   // return string of all the values
-  return `${rating},${summary},${recommend},${response},${body},${review_date},${reviewer_name},${reviewer_email},${verified},${helpfulness_yes},${helpfulness_no},${product_id}\n`;
+  return `${rating},${summary},${recommend},${response},${body},${date},${reviewer_name},${reviewer_email},${verified},${helpfulness},${helpfulness_no},${product_id}\n`;
 };
 
 // console.log(generateReview());
@@ -56,7 +56,7 @@ const startWriting = (writer, encoding, done) => {
 };
 
 // write header line before invoking
-writeStream.write(`rating,summary,recommend,response,body,review_date,reviewer_name,reviewer_email,verified,helpfulness_yes,helpfulness_no,product_id\n`, 'utf-8');
+writeStream.write(`rating,summary,recommend,response,body,date,reviewer_name,reviewer_email,verified,helpfulness,helpfulness_no,product_id\n`, 'utf-8');
 
 // invoke startWriting and pass in callback
 startWriting(writeStream, 'utf-8', () => {

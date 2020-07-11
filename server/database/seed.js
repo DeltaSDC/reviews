@@ -18,7 +18,7 @@ const seedReviewsTable = () => {
   console.log('started seeding reviews', dateObj.toTimeString(), ts);
   const pathToCSV = path.join(__dirname, 'reviews.csv');
   const delimiter = ',';
-  const sqlString = `COPY reviews(rating,summary,recommend,response,body,review_date,reviewer_name,reviewer_email,verified,helpfulness_yes,helpfulness_no,product_id) FROM '${pathToCSV}' DELIMITER '${delimiter}' CSV HEADER`;
+  const sqlString = `COPY reviews(rating,summary,recommend,response,body,date,reviewer_name,reviewer_email,verified,helpfulness,helpfulness_no,product_id) FROM '${pathToCSV}' DELIMITER '${delimiter}' CSV HEADER`;
   return db.query(sqlString);
 };
 
@@ -44,10 +44,10 @@ const seedPhotosTable = () => {
 console.log('begin invoking functions', dateObj.toTimeString(), ts);
 seedCharsTable()
   .then(() => console.log('Imported characteristics table', dateObj.toTimeString(), ts))
-  .then(seedReviewsTable())
+  .then(seedReviewsTable)
   .then(() => console.log('Imported reviews table', dateObj.toTimeString(), ts))
-  .then(seedJoinTable())
+  .then(seedJoinTable)
   .then(() => console.log('Imported join table', dateObj.toTimeString(), ts))
-  .then(seedPhotosTable())
+  .then(seedPhotosTable)
   .then(() => console.log('Imported photos table', dateObj.toTimeString(), ts))
   .catch(console.log);

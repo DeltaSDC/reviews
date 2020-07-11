@@ -14,11 +14,11 @@ CREATE TABLE reviews (
  recommend BOOLEAN,
  response VARCHAR(1000),
  body VARCHAR(1000),
- review_date TIMESTAMP WITH TIME ZONE,
+ date TIMESTAMP WITH TIME ZONE,
  reviewer_name VARCHAR(60),
  reviewer_email VARCHAR(60),
  verified BOOLEAN,
- helpfulness_yes INTEGER,
+ helpfulness INTEGER,
  helpfulness_no INTEGER,
  product_id INTEGER
 );
