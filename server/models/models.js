@@ -1,9 +1,6 @@
 const db = require('../database/index.js');
 
-// const getReviewPhotos = (product_id, callback) => {
-//   db.query(`SELECT * FROM photos WHERE `)
-// };
-
+// called from get list route
 const getReviewList = (product_id, callback) => {
   // const queryString1 = `SELECT review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness
   //                         FROM reviews
@@ -15,7 +12,33 @@ const getReviewList = (product_id, callback) => {
     if (err) {
       callback(err);
     } else {
-      console.log('response from db');
+      console.log('review list response from db');
+      callback(null, res.rows);
+    }
+  });
+};
+
+// called from get metadata route
+const getRatings = (product_id, callback) => {
+  const queryString = `SELECT (rating) FROM reviews WHERE product_id = ${product_id}`;
+  db.query(queryString, (err, res) => {
+    if (err) {
+      callback(err);
+    } else {
+      console.log('got ratings from db');
+      callback(null, res.rows);
+    }
+  });
+};
+
+// called from get metadata route
+const getRecommends = (product_id, callback) => {
+  const queryString = `SELECT (recommend) FROM reviews WHERE product_id = ${product_id}`;
+  db.query(queryString, (err, res) => {
+    if (err) {
+      callback(err);
+    } else {
+      console.log('got recs from db');
       callback(null, res.rows);
     }
   });
@@ -23,4 +46,6 @@ const getReviewList = (product_id, callback) => {
 
 module.exports = {
   getReviewList,
+  getRatings,
+  getRecommends,
 };

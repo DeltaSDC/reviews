@@ -2,6 +2,7 @@ const path = require('path');
 // const reviewList = require(path.join(__dirname, './sampleData.js'));
 const reviewData = require('../sampleData.js');
 const model = require('../models/models.js');
+const helpers = require('./helperFunctions.js');
 
 // get a review list
 const getReviewList = (req, res) => {
@@ -27,18 +28,35 @@ const getReviewList = (req, res) => {
 const getReviewMetadata = (req, res) => {
   console.log(req.params);
   const { product_id } = req.params;
-  // if (err) {
-  //   console.log('error getting review metadata');
-  //   res.status(404);
-  // } else {
-  console.log('got review metadata');
-  res.status(200).json({
-    product: product_id,
-    ratings: reviewData.reviewMetadata.ratings,
-    recommended: reviewData.reviewMetadata.recommended,
-    characteristics: reviewData.reviewMetadata.characteristics,
+  let ratings;
+  let recommended;
+  model.getRatings(product_id, (err, results) => {
+    if (err) {
+      console.log('error getting review metadata');
+      res.status(404);
+    } else {
+      console.log('got review metadata', results);
+      ratings = helpers.createRatingsMetadata(results);
+      model.getRecommends(product_id, (err1, results1) => {
+        if (err1) {
+          console.log('error getting recs metadata');
+          res.status(404);
+        } else {
+          console.log('got ratings metadata');
+          recommended = helpers.createRecommendedMetadata(results1);
+          console.log(recommended);
+          res.status(200).json({
+            product: product_id,
+            ratings,
+            recommended,
+            characteristics: reviewData.reviewMetadata.characteristics,
+          });
+        }
+      });
+
+
+    }
   });
-  // }
 };
 
 // add a review for a product
