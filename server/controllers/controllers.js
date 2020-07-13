@@ -12,7 +12,7 @@ const getReviewList = (req, res) => {
       console.log('error getting review list');
       res.status(404);
     } else {
-      console.log('got review list', results);
+      console.log('got review list');
       res.status(200).json({
         product: product_id,
         page,

@@ -71,7 +71,7 @@ class ReviewList extends React.Component {
           {this.props.reviewData.map(function(product, i) {
             if (i < showing) {
               return <Review
-              key={i} 
+              key={i}
               name={product.reviewer_name}
               rating={product.rating}
               summary={product.summary}
@@ -79,7 +79,7 @@ class ReviewList extends React.Component {
               date={product.date}
               helpfulness={product.helpfulness}
               recommend={product.recommend}
-              photos={product.photos}
+              photos={product.json_agg}
               reviewData={reviewData}
             />
             }

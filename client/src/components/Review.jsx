@@ -64,6 +64,7 @@ class Review extends React.Component {
     const date = this.props.date.substring(0, 10);
     const { recommend } = this.props;
     const { body } = this.props;
+    const { photos } = this.props;
     return (
       <div className="ratingBody">
         <div className="starsParent">
@@ -90,7 +91,7 @@ class Review extends React.Component {
         <p className="helpfulness">
           Helpful?
           &nbsp;
-          <a href="#" 
+          <a href="#"
             onClick={this.onClick}>
               Yes
           </a>
@@ -101,7 +102,11 @@ class Review extends React.Component {
         </p>
         &nbsp;
         <div>
-          {this.props.photos.length > 0 ? <ImageModal photo={this.props.photos[0].url} id={this.props.photos[0].id} /> : null}
+          {this.props.photos.length > 0 ? this.props.photos.map((photo) => {
+            // console.log(photo);
+            return <ImageModal key={photo.id} photo={photo.url} id={photo.id} />; })
+            : null}
+          {/* {this.props.photos.length > 0 ? <ImageModal photo={this.props.photos[0].url} id={this.props.photos[0].id} /> : null} */}
         </div>
         <hr></hr>
       </div>
