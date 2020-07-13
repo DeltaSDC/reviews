@@ -13,7 +13,13 @@ const getReviewList = (product_id, callback) => {
       callback(err);
     } else {
       console.log('review list response from db');
-      callback(null, res.rows);
+      callback(null, res.rows.map(row => {
+        const photos = row.json_agg;
+        delete row.json_agg;
+        return {
+          ...row, photos,
+        };
+      }));
     }
   });
 };
