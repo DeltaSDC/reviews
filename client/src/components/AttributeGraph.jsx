@@ -15,20 +15,26 @@ class AttributeGraph extends Component {
   }
 
   componentDidMount() {
-    fetch('http://52.26.193.201:3000/reviews/102/meta')
-      .then(res => res.json()) 
-      .then(data => this.createGraphs(data));
+    fetch('http://localhost:3004/reviews/5/meta')
+      .then(res => res.json())
+      .then((data) => {
+        // console.log(data);
+        this.createGraphs(data);
+      });
   }
 
   //Come back to***
 
   createGraphs(data) {
     let dataKeys = Object.keys(data.characteristics);
-    let stateKeys = Object.keys(this.state)
+    // console.log('datakeys from attribute', dataKeys);
+    let stateKeys = Object.keys(this.state);
+    // console.log('statekeys from attribute', stateKeys);
     for (let i = 0; i < dataKeys.length; i++) {
       if (stateKeys.includes(dataKeys[i].toLowerCase())) {
-        let widthPercent = ((Number(data.characteristics[dataKeys[i]].value) / 5) * 100)
-        widthPercent = `${widthPercent}%`
+        console.log(data.characteristics[dataKeys[i]].value);
+        let widthPercent = ((Number(data.characteristics[dataKeys[i]].value) / 5) * 100);
+        widthPercent = `${widthPercent}%`;
         this.setState({
           [dataKeys[i].toLowerCase()]: widthPercent,
         });
@@ -37,6 +43,7 @@ class AttributeGraph extends Component {
   }
 
   render() {
+    // console.log(this.state);
     let { size, width, comfort, quality, length, fit } = this.state;
     let stateKeys = Object.keys(this.state);
     return (

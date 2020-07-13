@@ -16,16 +16,18 @@ class AddReviewTable extends Component {
   }
 
   componentDidMount() {
-    fetch('http://52.26.193.201:3000/reviews/102/meta')
-      .then(res => res.json()) 
-      .then(data => this.hideRows(data));
+    fetch('http://localhost:3004/reviews/5/meta')
+      .then(res => res.json())
+      .then((data) => {
+        this.hideRows(data);
+      });
   }
 
   hideRows(data) {
     let dataKeys = Object.keys(data.characteristics);
-    console.log(dataKeys)
+    // console.log(dataKeys)
     let stateKeys = Object.keys(this.state);
-    console.log(stateKeys)
+    // console.log(stateKeys)
     for (let i = 0; i < dataKeys.length; i++) {
       if (stateKeys.includes(dataKeys[i].toLowerCase())) {
         this.setState({
@@ -34,7 +36,6 @@ class AddReviewTable extends Component {
       }
     }
   }
-  
 
   render() {
     let { size, width, comfort, quality, length, fit } = this.state;
