@@ -63,9 +63,33 @@ const getChars = (product_id, callback) => {
   });
 };
 
+// called from POST new review route
+const addProductReview = (reviewInfo, callback) => {
+  console.log('reviewinfo from model', reviewInfo);
+  const { product_id, rating, summary, body, recommend, reviewer_name, reviewer_email } = reviewInfo;
+  const date = new Date();
+  const dateToString = date.toUTCString();
+  const queryString = `INSERT INTO reviews(rating, summary, recommend, response, body, date, reviewer_name, reviewer_email, verified, helpfulness, helpfulness_no, product_id) VALUES ('${rating}', '${summary}', '${recommend}', '', '${body}', '${dateToString}', '${reviewer_name}', '${reviewer_email}', 'true', '${0}', '${0}', '${product_id}') RETURNING review_id`;
+  db.query(queryString, (err, res) => {
+    if (err) {
+      console.log(err);
+      callback(err);
+    } else {
+      console.log('added review to db');
+      callback(null, res.rows[0].review_id);
+    }
+  });
+};
+
+// called from POST new review route
+const addReviewPhotos = (review_id, photos, callback) => {
+
+}
+
 module.exports = {
   getReviewList,
   getRatings,
   getRecommends,
   getChars,
+  addProductReview,
 };

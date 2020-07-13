@@ -72,16 +72,31 @@ const addProductReview = (req, res) => {
   console.log(req.params);
   console.log(req.body);
   const { product_id } = req.params;
-  const { rating, summary, body, recommend, name, email, photos, characteristics } = req.params;
-  // if (err) {
-  //   console.log('error adding a product review');
-  //   res.status(404);
-  // } else {
-  console.log('added product review');
-  res.status(201).json({
-    product: product_id,
+  const { rating, summary, body, recommend, name, email, photos, characteristics } = req.body;
+  const reviewsTableInfo = {
+    product_id: parseInt(product_id),
+    rating,
+    summary,
+    body,
+    recommend,
+    reviewer_name: name,
+    reviewer_email: email,
+  };
+  console.log('reviewstableinfo', reviewsTableInfo);
+  model.addProductReview(reviewsTableInfo, (err, results) => {
+    if (err) {
+      console.log('error adding a product review', err);
+      res.status(404);
+    } else {
+      console.log('added product review', results);
+      console.log('results', results);
+      // insert photos
+
+      res.status(201).json({
+        product_id,
+      });
+    }
   });
-  // }
 };
 
 // mark a review as helpful
