@@ -44,8 +44,22 @@ const getRecommends = (product_id, callback) => {
   });
 };
 
+// called from get metadata route
+const getChars = (product_id, callback) => {
+  const queryString = `SELECT rc.* FROM reviews_characteristics rc INNER JOIN reviews r ON rc.review_id = r.review_id WHERE r.product_id = ${product_id}`;
+  db.query(queryString, (err, res) => {
+    if (err) {
+      callback(err);
+    } else {
+      console.log('got chars from join table in db');
+      callback(null, res.rows);
+    }
+  });
+};
+
 module.exports = {
   getReviewList,
   getRatings,
   getRecommends,
+  getChars,
 };

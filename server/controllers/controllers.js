@@ -30,12 +30,13 @@ const getReviewMetadata = (req, res) => {
   const { product_id } = req.params;
   let ratings;
   let recommended;
+  let characteristics;
   model.getRatings(product_id, (err, results) => {
     if (err) {
       console.log('error getting review metadata');
       res.status(404);
     } else {
-      console.log('got review metadata', results);
+      console.log('got review metadata');
       ratings = helpers.createRatingsMetadata(results);
       model.getRecommends(product_id, (err1, results1) => {
         if (err1) {
@@ -44,17 +45,24 @@ const getReviewMetadata = (req, res) => {
         } else {
           console.log('got ratings metadata');
           recommended = helpers.createRecommendedMetadata(results1);
-          console.log(recommended);
-          res.status(200).json({
-            product: product_id,
-            ratings,
-            recommended,
-            characteristics: reviewData.reviewMetadata.characteristics,
+          model.getChars(product_id, (err2, results2) => {
+            if (err1) {
+              console.log('error getting chars metadata');
+              res.status(404);
+            } else {
+              console.log('got chars metadata', results2);
+              characteristics = helpers.createCharsMetadata(results2);
+              console.log(characteristics);
+              res.status(200).json({
+                product_id,
+                ratings,
+                recommended,
+                characteristics,
+              });
+            }
           });
         }
       });
-
-
     }
   });
 };

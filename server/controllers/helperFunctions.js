@@ -38,7 +38,48 @@ const createRecommendedMetadata = (recommended) => {
   return recommendedMetadata;
 };
 
+const createCharsMetadata = (chars) => {
+  // accepts an array of objects with chars join data, including char_id and rating for each review
+  // create obj where key is name of char, and each char has an obj with the id of char and av value across all reviews
+  let charsMetadata = {};
+  let finalResult = {};
+  const charOptions = {
+    1: 'Size',
+    2: 'Width',
+    3: 'Comfort',
+    4: 'Quality',
+    5: 'Length',
+    6: 'Fit',
+  };
+  for (let i = 0; i < chars.length; i += 1) {
+    let currentCharId = chars[i].char_id;
+    let currentCharValue = chars[i].rating;
+    if (charsMetadata[currentCharId] === undefined) {
+      charsMetadata[currentCharId] = [currentCharValue];
+    } else {
+      charsMetadata[currentCharId].push(currentCharValue);
+    }
+  }
+  let charsPresent = Object.keys(charsMetadata);
+  for (let j = 0; j < charsPresent.length; j += 1) {
+    let currentChar = charsPresent[j];
+    let charName = charOptions[currentChar];
+    let ratings = charsMetadata[currentChar];
+    let ratingsTotal = 0;
+    for (let k = 0; k < ratings.length; k += 1) {
+      ratingsTotal += ratings[k];
+    }
+    let ratingsAverage = ratingsTotal / ratings.length;
+    finalResult[charName] = {
+      'id': currentChar,
+      'value': ratingsAverage,
+    };
+  }
+  return finalResult;
+};
+
 module.exports = {
   createRatingsMetadata,
   createRecommendedMetadata,
+  createCharsMetadata,
 };
