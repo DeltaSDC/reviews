@@ -65,7 +65,7 @@ const getChars = (product_id, callback) => {
 
 // called from POST new review route
 const addProductReview = (reviewInfo, callback) => {
-  console.log('reviewinfo from model', reviewInfo);
+  // console.log('reviewinfo from model', reviewInfo);
   const { product_id, rating, summary, body, recommend, reviewer_name, reviewer_email } = reviewInfo;
   const date = new Date();
   const dateToString = date.toUTCString();
@@ -83,8 +83,48 @@ const addProductReview = (reviewInfo, callback) => {
 
 // called from POST new review route
 const addReviewPhotos = (review_id, photos, callback) => {
+  let queryString = `INSERT INTO photos(review_id, url) VALUES `;
+  for (let i = 0; i < photos.length; i += 1) {
+    queryString += `('${review_id}', '${photos[i]}')`;
+    if (i !== photos.length - 1) {
+      queryString += ', ';
+    }
+  }
+  queryString += ' RETURNING id';
+  console.log('query for photos', queryString);
+  db.query(queryString, (err, res) => {
+    if (err) {
+      console.log(err);
+      callback(err);
+    } else {
+      console.log('added photo to db', res.rows);
+      callback(null, res.rows);
+    }
+  });
+};
 
-}
+// called from POST new review route
+const addReviewChars = (review_id, characteristics, callback) => {
+  let queryString = `INSERT INTO reviews_characteristics(review_id, char_id, rating) VALUES `;
+  const charArr = Object.keys(characteristics);
+  for (let i = 0; i < charArr.length; i += 1) {
+    queryString += `('${review_id}', '${charArr[i]}', '${characteristics[charArr[i]]}')`;
+    if (i !== charArr.length - 1) {
+      queryString += ', ';
+    }
+  }
+  queryString += ' RETURNING id';
+  console.log('query for chars', queryString);
+  db.query(queryString, (err, res) => {
+    if (err) {
+      console.log(err);
+      callback(err);
+    } else {
+      console.log('added characteristics to db', res.rows);
+      callback(null, res.rows);
+    }
+  });
+};
 
 module.exports = {
   getReviewList,
@@ -92,4 +132,6 @@ module.exports = {
   getRecommends,
   getChars,
   addProductReview,
+  addReviewPhotos,
+  addReviewChars,
 };

@@ -82,19 +82,63 @@ const addProductReview = (req, res) => {
     reviewer_name: name,
     reviewer_email: email,
   };
-  console.log('reviewstableinfo', reviewsTableInfo);
-  model.addProductReview(reviewsTableInfo, (err, results) => {
+  // console.log('reviewstableinfo', reviewsTableInfo);
+  model.addProductReview(reviewsTableInfo, (err, review_id) => {
     if (err) {
       console.log('error adding a product review', err);
       res.status(404);
     } else {
-      console.log('added product review', results);
-      console.log('results', results);
+      console.log('added product review', review_id);
       // insert photos
-
-      res.status(201).json({
-        product_id,
-      });
+      if (photos.length > 0) {
+        model.addReviewPhotos(review_id, photos, (err1, results) => {
+          if (err1) {
+            console.log('error adding review photos', err1);
+            res.status(404);
+          } else {
+            console.log('added review photos', results);
+            // insert characteristics
+            if (JSON.stringify(characteristics) !== JSON.stringify({})) {
+              model.addReviewChars(review_id, characteristics, (err2, results2) => {
+                if (err2) {
+                  console.log('error adding review chars', err2);
+                  res.status(404);
+                } else {
+                  console.log('added review chars', results2);
+                  res.status(201).json({
+                    product_id,
+                  });
+                }
+              });
+            } else {
+              console.log('no characteristics');
+              res.status(201).json({
+                product_id,
+              });
+            }
+          }
+        });
+      } else {
+        console.log('no photos');
+        if (JSON.stringify(characteristics) !== JSON.stringify({})) {
+          model.addReviewChars(review_id, characteristics, (err2, results2) => {
+            if (err2) {
+              console.log('error adding review chars', err2);
+              res.status(404);
+            } else {
+              console.log('added review chars', results2);
+              res.status(201).json({
+                product_id,
+              });
+            }
+          });
+        } else {
+          console.log('no characteristics');
+          res.status(201).json({
+            product_id,
+          });
+        }
+      }
     }
   });
 };
