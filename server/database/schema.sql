@@ -20,7 +20,8 @@ CREATE TABLE reviews (
  verified BOOLEAN,
  helpfulness INTEGER,
  helpfulness_no INTEGER,
- product_id INTEGER
+ product_id INTEGER,
+ reported BOOLEAN
 );
 
 CREATE TABLE photos (

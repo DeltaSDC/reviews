@@ -26,7 +26,7 @@ const generateReview = () => {
   const product_id = Math.floor(Math.random() * 20) + 1;
 
   // return string of all the values
-  return `${rating},${summary},${recommend},${response},${body},${date},${reviewer_name},${reviewer_email},${verified},${helpfulness},${helpfulness_no},${product_id}\n`;
+  return `${rating},${summary},${recommend},${response},${body},${date},${reviewer_name},${reviewer_email},${verified},${helpfulness},${helpfulness_no},${product_id},false\n`;
 };
 
 // console.log(generateReview());
@@ -56,7 +56,7 @@ const startWriting = (writer, encoding, done) => {
 };
 
 // write header line before invoking
-writeStream.write(`rating,summary,recommend,response,body,date,reviewer_name,reviewer_email,verified,helpfulness,helpfulness_no,product_id\n`, 'utf-8');
+writeStream.write(`rating,summary,recommend,response,body,date,reviewer_name,reviewer_email,verified,helpfulness,helpfulness_no,product_id,reported\n`, 'utf-8');
 
 // invoke startWriting and pass in callback
 startWriting(writeStream, 'utf-8', () => {

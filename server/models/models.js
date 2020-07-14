@@ -6,7 +6,7 @@ const getReviewList = (product_id, callback) => {
   //                         FROM reviews
   //                         WHERE product_id=${product_id}`;
   // const innerjoin = `SELECT * FROM reviews r INNER JOIN photos p ON r.review_id = p.review_id WHERE r.product_id = ${product_id};`;
-  const queryString = `SELECT r.*, json_agg(p.*) FROM reviews r INNER JOIN photos p ON r.review_id = p.review_id WHERE r.product_id = ${product_id} GROUP BY r.review_id`;
+  const queryString = `SELECT r.*, json_agg(p.*) FROM reviews r INNER JOIN photos p ON r.review_id = p.review_id WHERE r.product_id = ${product_id} AND r.reported = false GROUP BY r.review_id`;
 
   db.query(queryString, (err, res) => {
     if (err) {
@@ -26,7 +26,7 @@ const getReviewList = (product_id, callback) => {
 
 // called from get metadata route
 const getRatings = (product_id, callback) => {
-  const queryString = `SELECT (rating) FROM reviews WHERE product_id = ${product_id}`;
+  const queryString = `SELECT (rating) FROM reviews WHERE product_id = ${product_id} AND reported = false`;
   db.query(queryString, (err, res) => {
     if (err) {
       callback(err);
@@ -39,7 +39,7 @@ const getRatings = (product_id, callback) => {
 
 // called from get metadata route
 const getRecommends = (product_id, callback) => {
-  const queryString = `SELECT (recommend) FROM reviews WHERE product_id = ${product_id}`;
+  const queryString = `SELECT (recommend) FROM reviews WHERE product_id = ${product_id} AND reported = false`;
   db.query(queryString, (err, res) => {
     if (err) {
       callback(err);
@@ -52,7 +52,7 @@ const getRecommends = (product_id, callback) => {
 
 // called from get metadata route
 const getChars = (product_id, callback) => {
-  const queryString = `SELECT rc.* FROM reviews_characteristics rc INNER JOIN reviews r ON rc.review_id = r.review_id WHERE r.product_id = ${product_id}`;
+  const queryString = `SELECT rc.* FROM reviews_characteristics rc INNER JOIN reviews r ON rc.review_id = r.review_id WHERE r.product_id = ${product_id} AND reported = false`;
   db.query(queryString, (err, res) => {
     if (err) {
       callback(err);
@@ -69,7 +69,7 @@ const addProductReview = (reviewInfo, callback) => {
   const { product_id, rating, summary, body, recommend, reviewer_name, reviewer_email } = reviewInfo;
   const date = new Date();
   const dateToString = date.toUTCString();
-  const queryString = `INSERT INTO reviews(rating, summary, recommend, response, body, date, reviewer_name, reviewer_email, verified, helpfulness, helpfulness_no, product_id) VALUES ('${rating}', '${summary}', '${recommend}', '', '${body}', '${dateToString}', '${reviewer_name}', '${reviewer_email}', 'true', '${0}', '${0}', '${product_id}') RETURNING review_id`;
+  const queryString = `INSERT INTO reviews(rating, summary, recommend, response, body, date, reviewer_name, reviewer_email, verified, helpfulness, helpfulness_no, product_id, reported) VALUES ('${rating}', '${summary}', '${recommend}', '', '${body}', '${dateToString}', '${reviewer_name}', '${reviewer_email}', 'true', '${0}', '${0}', '${product_id}', 'false') RETURNING review_id`;
   db.query(queryString, (err, res) => {
     if (err) {
       console.log(err);
@@ -126,6 +126,34 @@ const addReviewChars = (review_id, characteristics, callback) => {
   });
 };
 
+// PUT for marking helpful
+const markReviewHelpful = (review_id, callback) => {
+  const queryString = `UPDATE reviews SET helpfulness = helpfulness + 1 WHERE review_id = '${review_id}' RETURNING helpfulness`;
+  db.query(queryString, (err, res) => {
+    if (err) {
+      console.log(err);
+      callback(err);
+    } else {
+      console.log('marked review as helpful', res.rows[0].helpfulness);
+      callback(null, res.rows[0].helpfulness);
+    }
+  });
+};
+
+// PUT for reporting
+const reportReview = (review_id, callback) => {
+  const queryString = `UPDATE reviews SET reported = 'true' WHERE review_id = '${review_id}' RETURNING reported`;
+  db.query(queryString, (err, res) => {
+    if (err) {
+      console.log(err);
+      callback(err);
+    } else {
+      console.log('reported review', res.rows[0].reported);
+      callback(null, res.rows[0].reported);
+    }
+  });
+};
+
 module.exports = {
   getReviewList,
   getRatings,
@@ -134,4 +162,6 @@ module.exports = {
   addProductReview,
   addReviewPhotos,
   addReviewChars,
+  markReviewHelpful,
+  reportReview,
 };

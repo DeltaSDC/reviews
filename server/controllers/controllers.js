@@ -147,30 +147,30 @@ const addProductReview = (req, res) => {
 const markReviewHelpful = (req, res) => {
   console.log(req.params);
   const { review_id } = req.params;
-  // if (err) {
-  //   console.log('error marking review as helpful');
-  //   res.status(404);
-  // } else {
-  console.log('marked review as helpful');
-  res.status(204).json({
-    review: review_id,
+  model.markReviewHelpful(review_id, (err, results) => {
+    if (err) {
+      console.log('error marking review as helpful');
+      res.status(404);
+    } else {
+      console.log('marked review as helpful', results);
+      res.status(204).end();
+    }
   });
-  // }
 };
 
 // report review
 const reportReview = (req, res) => {
   console.log(req.params);
   const { review_id } = req.params;
-  // if (err) {
-  //   console.log('error reporting review');
-  //   res.status(404);
-  // } else {
-  console.log('reported review');
-  res.status(204).json({
-    review: review_id,
+  model.reportReview(review_id, (err, results) => {
+    if (err) {
+      console.log('error reporting review');
+      res.status(404);
+    } else {
+      console.log('reported review', results);
+      res.status(204).end();
+    }
   });
-  // }
 };
 
 module.exports = {
