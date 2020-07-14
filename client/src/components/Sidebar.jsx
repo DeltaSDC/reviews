@@ -8,18 +8,20 @@ class Sidebar extends React.Component {
     super(props);
 
     this.state = {
+      ratings: {},
+      recommended: {},
       recommend: '100%',
       reviews: [],
       averageRating: 0,
       starPercentage: '0',
       barPercents: [],
       stars: [
-        { name: 1, count: 0},
-        { name: 2, count: 0},
-        { name: 3, count: 0},
-        { name: 4, count: 0},
-        { name: 5, count: 0},
-      ]
+        { name: 1, count: 0 },
+        { name: 2, count: 0 },
+        { name: 3, count: 0 },
+        { name: 4, count: 0 },
+        { name: 5, count: 0 },
+      ],
     };
     this.averageStarRating = this.averageStarRating.bind(this);
     this.updateEachStarBar = this.updateEachStarBar.bind(this);
@@ -27,46 +29,120 @@ class Sidebar extends React.Component {
   }
 
   componentDidMount() {
-    fetch(' http://52.26.193.201:3000/reviews/102/list')
+    fetch('http://localhost:3004/reviews/5/meta')
+    // fetch(' http://localhost:3004/reviews/5/list')
       .then(res => res.json())
-      .then(data => this.setState({
-        reviews: data.results,
-      }))
-      .then(moarData => this.averageStarRating())
-      .then(smoreData => this.updateEachStarBar())
-      .then(smoreSmoreData => this.checkForReco());
+      .then((data) => {
+        this.checkForReco(data);
+        this.averageStarRating(data);
+      });
+      // .then(data => this.setState({
+      //   ratings: data.ratings,
+      //   recommended: data.recommended,
+      //   // reviews: data.results,
+      // }))
+      // .then(moarData => this.averageStarRating())
+      // .then(smoreData => this.updateEachStarBar())
+      // .then(smoreSmoreData => this.checkForReco());
+
+    fetch('http://localhost:3004/reviews/5/list')
+      .then(res => res.json())
+      .then((data) => {
+        this.setState({
+          reviews: data.results,
+        });
+      })
+      .then((smoreData) => {
+        this.updateEachStarBar(smoreData);
+      });
   }
 
-  checkForReco() {
-    let recommends = 0;
-    for (let i = 0; i < this.state.reviews.length; i++) {
-      recommends += this.state.reviews[i].recommend
-    }
-    let percentage = (recommends / this.state.reviews.length) * 100
-    let percentageText = `${percentage}%`
+  // checkForReco() {
+  //   let recommends = 0;
+  //   for (let i = 0; i < this.state.reviews.length; i++) {
+  //     recommends += this.state.reviews[i].recommend
+  //   }
+  //   let percentage = (recommends / this.state.reviews.length) * 100
+  //   let percentageText = `${percentage}%`
+  //   this.setState({
+  //     recommend: percentageText,
+  //   })
+  // }
+
+  checkForReco(data) {
+    let posRecs = data.recommended['1'];
+    let totalRecs = posRecs + data.recommended['0'];
+    let percentage = Math.round((posRecs / totalRecs) * 100);
+    let percentageText = `${percentage}%`;
+    console.log(percentageText);
     this.setState({
       recommend: percentageText,
-    })
+    });
   }
 
-  averageStarRating() {
-    const { reviews } = this.state;
-    let ratingSum = 0;
-    for (let i = 0; i < reviews.length; i++) {
-      ratingSum += reviews[i].rating;
-    }
-    if (ratingSum) {
-      const averageRating = ratingSum / reviews.length;
-      const starPercentage = (averageRating / 5) * 100;
-      this.setState({
-        starPercentage,
-        averageRating,
-      });
-    }
+  // averageStarRating() {
+  //   const { reviews } = this.state;
+  //   let ratingSum = 0;
+  //   for (let i = 0; i < reviews.length; i++) {
+  //     ratingSum += reviews[i].rating;
+  //   }
+  //   if (ratingSum) {
+  //     const averageRating = ratingSum / reviews.length;
+  //     const starPercentage = (averageRating / 5) * 100;
+  //     this.setState({
+  //       starPercentage,
+  //       averageRating,
+  //     });
+  //   }
+  // }
 
+  averageStarRating(data) {
+    let ratings = data.ratings;
+    let ratingsValues = Object.keys(ratings);
+    let totalRating = 0;
+    let numRating = 0;
+    for (let i = 0; i < ratingsValues.length; i += 1) {
+      totalRating += (ratingsValues[i] * ratings[ratingsValues[i]]);
+      numRating += ratings[ratingsValues[i]];
+    }
+    console.log('total', totalRating);
+    let averageRating = totalRating / numRating;
+    console.log(averageRating);
+    const starPercentage = (averageRating / 5) * 100;
+    this.setState({
+      starPercentage,
+      averageRating,
+    });
   }
 
-  updateEachStarBar() {
+  // updateEachStarBar() {
+  //   const { reviews, stars } = this.state;
+  //   let ratingCounter = 0;
+  //   for (let i = 0; i < reviews.length; i++) {
+  //     let currentRating = reviews[i].rating;
+  //     for (let j = 0; j < stars.length; j++) {
+  //       if (stars[j].name === currentRating) {
+  //         ratingCounter++
+  //         let oldState = stars;
+  //         let updateState = stars[j].count += 1
+  //         oldState[j].count = updateState;
+  //         this.setState({
+  //           stars: oldState,
+  //         });
+  //       }
+  //     }
+  //   }
+  //   let barPercents = [];
+  //   for (let k = 0; k < stars.length; k++) {
+  //     let percentage = ((stars[k].count / ratingCounter) * 100).toFixed(1);
+  //     barPercents.push(`${percentage}%`);
+  //   }
+  //   this.setState({
+  //     barPercents,
+  //   });
+  // }
+
+  updateEachStarBar(data) {
     const { reviews, stars } = this.state;
     let ratingCounter = 0;
     for (let i = 0; i < reviews.length; i++) {
@@ -114,7 +190,7 @@ class Sidebar extends React.Component {
             <div className="sidebarRecommend">
               {this.state.recommend} of reviews recommend this product
             </div>
-            
+
             <StarBars
               barPercents={barPercents}
               filter={this.props.filter}
