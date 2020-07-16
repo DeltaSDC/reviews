@@ -1,8 +1,10 @@
+const config = require('../config.js');
+require('newrelic');
+
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const router = require('./routes/routes.js');
-const config = require('../config.js');
 
 const PORT = config.app.port;
 const app = express();
