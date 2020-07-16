@@ -2,8 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const router = require('./routes/routes.js');
+const config = require('../config.js');
 
-const PORT = 3004;
+const PORT = config.app.port;
 const app = express();
 
 // middleware
