@@ -7,30 +7,40 @@ class AddReview extends React.Component {
     super(props)
 
     this.state = {
-      productName: '',
+      // productName: '',
       currentBodyLength: 0,
       photoShowId: '',
       photoShowIds: [],
-    }
+      rating: 0,
+      summary: '',
+      body: '',
+      recommend: '',
+      name: '',
+      email: '',
+      photos: [],
+      characteristics: {},
+    };
     this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onChangeTextBody = this.onChangeTextBody.bind(this);
     this.submitImage = this.submitImage.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.updateRating = this.updateRating.bind(this);
   }
 
-  componentDidMount() {
-    fetch('http://52.26.193.201:3000/products/30/')
-      .then(response => response.json())
-      .then(data => this.setState({
-        productName: data.name
-      }))
-      .catch(err => console.log(err));
-  }
+  // componentDidMount() {
+  //   fetch('http://52.26.193.201:3000/products/30/')
+  //     .then(response => response.json())
+  //     .then(data => this.setState({
+  //       productName: data.name
+  //     }))
+  //     .catch(err => console.log(err));
+  // }
 
   onSubmit() {
     console.log('submitted')
   }
 
-  onChange(e) {
+  onChangeTextBody(e) {
     if (e.target.value.length <= 50) {
       this.setState({
         currentBodyLength: e.target.value.length,
@@ -38,23 +48,38 @@ class AddReview extends React.Component {
     }
   }
 
+  handleChange(event) {
+    console.log('change', event.target.value);
+    const key = event.target.name;
+    const value = event.target.value;
+    this.setState({
+      [key]: value,
+    });
+  }
+
   submitImage(e) {
     this.setState({
       photoShowId: e.target.files[0],
     });
     let fileExt = e.target.files[0].name.split('.')[1];
-    let okExtensions = ['png', 'jpeg', 'gif', 'bmp', 'jfif']
+    let okExtensions = ['png', 'jpeg', 'gif', 'bmp', 'jfif'];
     if (!okExtensions.includes(fileExt)) {
       alert("Sorry, you can only upload images! Allowed: png, jpeg, gif, bmp, jfif")
       return;
     }
     if (this.state.photoShowIds.length < 5 && e.target.files[0]) {
       let addImageArr = this.state.photoShowIds;
-      addImageArr.push(URL.createObjectURL(e.target.files[0]))
+      addImageArr.push(URL.createObjectURL(e.target.files[0]));
       this.setState({
         photoShowIds: addImageArr,
       });
     }
+  }
+
+  updateRating(rating) {
+    this.setState({
+      rating,
+    });
   }
 
   render() {
@@ -73,7 +98,7 @@ class AddReview extends React.Component {
             <div className="modal-header">
               <div className="modal-title" id="exampleModalLongTitle">
                 Write your review
-                <div className="modal-subtitle">{this.state.productName}</div>
+                {/* <div className="modal-subtitle">{this.state.productName}</div> */}
               </div>
               <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -81,7 +106,7 @@ class AddReview extends React.Component {
             </div>
             <div className="modal-body">
               <div className="modal-star-rating">* Rate the product 1-5:</div>
-              <AddReviewStars />
+              <AddReviewStars updateRating={this.updateRating} />
               <br></br>
               <div className="modal-recommend">* Would you recommend this product?</div>
               <table className="table table-sm">
@@ -93,7 +118,7 @@ class AddReview extends React.Component {
                     Yes
                   </th>
                     <td>
-                      <input className="form-check-input" type="radio" value="" id="yesRadio" name="YesNoRadio" required></input>
+                      <input className="form-check-input" type="radio" value="yes" id="yesRadio" name="recommend" onChange={this.handleChange} required></input>
                     </td>
                   </tr>
                   <tr className="YesNoRadio-parent">
@@ -101,7 +126,7 @@ class AddReview extends React.Component {
                     No
                   </th>
                     <td>
-                      <input className="form-check-input" type="radio" value="" id="noRadio" name="YesNoRadio" required></input>
+                      <input className="form-check-input" type="radio" value="no" id="noRadio" name="recommend" onChange={this.handleChange} required></input>
                     </td>
                   </tr>
                 </tbody>
@@ -123,7 +148,7 @@ class AddReview extends React.Component {
                 </li>
                 <li className="list-group-item">
                 <div className="form-group">
-                <textarea placeholder="* Please enter your review..." onChange={this.onChange} minLength="50" className="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+                <textarea placeholder="* Please enter your review..." onChange={this.onChangeTextBody} minLength="50" className="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
                 <span className="minimum-message">{ (this.state.currentBodyLength === 50) ? <div>Minimum reached</div> : <div>* Minimum required characters left: {50 - this.state.currentBodyLength}</div>}</span>
               </div>
                 </li>
@@ -150,7 +175,7 @@ class AddReview extends React.Component {
                     <label className="btn btn-secondary">
                       Browse <input onChange={this.submitImage} id="upload-button" type="file" hidden></input>
                     </label>
-                    {this.state.photoShowIds.map((id, key) => 
+                    {this.state.photoShowIds.map((id, key) =>
                       <div key={key} id="upload_prev">
                         <img id="photoShowId" src={id} width="50%" height="50%" style={ id === '' ? { display:'none'} : {display : 'block'} }/>
                       </div>

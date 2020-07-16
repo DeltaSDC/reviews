@@ -50,9 +50,8 @@ const getReviewMetadata = (req, res) => {
               console.log('error getting chars metadata');
               res.status(404);
             } else {
-              console.log('got chars metadata', results2);
+              console.log('got chars metadata');
               characteristics = helpers.createCharsMetadata(results2);
-              console.log(characteristics);
               res.status(200).json({
                 product_id,
                 ratings,

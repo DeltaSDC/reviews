@@ -9,7 +9,7 @@ class StarBars extends React.Component {
 
   render() {
     let {
-      barPercents,
+      starBarPercentages,
       filter,
       removeFilter,
       hide5Stars,
@@ -36,19 +36,19 @@ class StarBars extends React.Component {
           <div className="starlabel" onClick={filter}>1 stars</div>
         </div>
         <div className="bars-outer" onClick={filter}>
-          <div className="sb-star-breakdown" style={{width: barPercents[4]}}></div>
+          <div className="sb-star-breakdown" style={ starBarPercentages[5] ? {width: starBarPercentages[5]} : {opacity: '0'} }></div>
         </div>
         <div className="bars-outer" onClick={filter}>
-          <div className="sb-star-breakdown" style={{width: barPercents[3]}}></div>
+          <div className="sb-star-breakdown" style={ starBarPercentages[4] ? {width: starBarPercentages[4]} : {opacity: '0'} }></div>
         </div>
         <div className="bars-outer" onClick={filter}>
-          <div className="sb-star-breakdown" style={{width: barPercents[2]}}></div>
+          <div className="sb-star-breakdown" style={ starBarPercentages[3] ? {width: starBarPercentages[3]} : {opacity: '0'} }></div>
         </div>
         <div className="bars-outer" onClick={filter}>
-          <div className="sb-star-breakdown" style={{width: barPercents[1]}}></div>
+          <div className="sb-star-breakdown" style={ starBarPercentages[2] ? {width: starBarPercentages[2]} : {opacity: '0'} }></div>
         </div>
         <div className="bars-outer" onClick={filter}>
-          <div className="sb-star-breakdown" style={{width: barPercents[0]}}></div>
+          <div className="sb-star-breakdown" style={ starBarPercentages[1] ? {width: starBarPercentages[1]} : {opacity: '0'} }></div>
         </div>
         <div className="star-button-title" style={isAnyStarShowing ? {display: style } : { display: 'none'}}>Filters Selected:</div>
         <button className="stars5-button star-filter-buttons" type="button" onClick={filter} style={!hide5Stars ? {display: style } : { display: 'none'}}>5 stars</button>
