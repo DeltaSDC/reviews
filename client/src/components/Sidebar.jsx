@@ -24,6 +24,7 @@ class Sidebar extends React.Component {
     fetch('http://localhost:3004/reviews/15/meta')
       .then(res => res.json())
       .then((data) => {
+        console.log(data);
         this.setState({
           ratings: data.ratings,
           recommended: data.recommended,
@@ -41,7 +42,7 @@ class Sidebar extends React.Component {
     let totalRecs = posRecs + this.state.recommended['0'];
     let percentage = Math.round((posRecs / totalRecs) * 100);
     let percentageText = `${percentage}%`;
-    console.log('percentagetext from checkforreco', percentageText);
+    // console.log('percentagetext from checkforreco', percentageText);
     this.setState({
       recommend: percentageText,
     });
@@ -56,9 +57,9 @@ class Sidebar extends React.Component {
       totalRating += (ratingsValues[i] * ratings[ratingsValues[i]]);
       numRating += ratings[ratingsValues[i]];
     }
-    console.log('total num ratings from avstar', totalRating, numRating);
+    // console.log('total num ratings from avstar', totalRating, numRating);
     let averageRating = totalRating / numRating;
-    console.log(averageRating);
+    // console.log(averageRating);
     const starPercentage = (averageRating / 5) * 100;
     this.setState({
       starPercentage,
@@ -75,16 +76,16 @@ class Sidebar extends React.Component {
     for (let i = 0; i < numOfRatings.length; i += 1) {
       overallNumRatings += numOfRatings[i];
     }
-    console.log('total num ratings from updateeach', overallNumRatings);
+    // console.log('total num ratings from updateeach', overallNumRatings);
     let starBars = {};
     for (let j = 1; j < 6; j += 1) {
       if (ratings[j] === undefined) {
         starBars[j] = '';
       } else {
         let num = ratings[j];
-        console.log(num);
+        // console.log(num);
         let percent = (num / overallNumRatings) * 100;
-        console.log('percent', percent);
+        // console.log('percent', percent);
         starBars[j] = `${percent}%`;
       }
     }
@@ -99,7 +100,7 @@ class Sidebar extends React.Component {
     };
     let { starBarPercentages } = this.state;
     let { hide5Stars, hide4Stars, hide3Stars, hide2Stars, hide1Stars, style } = this.props;
-    console.log('starBarpercentages', this.state.starBarPercentages);
+    // console.log('starBarpercentages', this.state.starBarPercentages);
     return (
       <div id="sidebar">
         <div className="sidebar-header"><div className="sidebarTitle">{`Ratings & Reviews`}</div></div>

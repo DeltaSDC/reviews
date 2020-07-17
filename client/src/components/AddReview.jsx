@@ -94,7 +94,7 @@ class AddReview extends React.Component {
   }
 
   handleChange(event) {
-    console.log('change', event.target.value);
+    // console.log('change', event.target.value);
     const key = event.target.name;
     const value = event.target.value;
     this.setState({

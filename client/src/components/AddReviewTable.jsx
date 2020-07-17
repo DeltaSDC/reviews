@@ -43,14 +43,14 @@ class AddReviewTable extends Component {
       fit: 6,
     };
     let rating = e.target.value;
-    console.log('char rating', rating);
+    // console.log('char rating', rating);
     let char = e.target.name;
     char = characteristics[char];
-    console.log('char id', char);
+    // console.log('char id', char);
     let charObj = {
       [char]: rating,
     };
-    console.log(charObj);
+    // console.log(charObj);
     // this.setState({
     //   characteristics: charObj,
     // });

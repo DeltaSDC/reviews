@@ -31,7 +31,7 @@ class App extends Component {
     fetch('http://localhost:3004/reviews/15/list')
       .then(res => res.json())
       .then((data) => {
-        // console.log(data.results);
+        console.log(data.results);
         this.setState({
           reviews: data.results,
           filterReviews: data.results,
