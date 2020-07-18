@@ -1,84 +1,40 @@
 config:
   target: "http://localhost:3004"
   phases:
-    - duration: 60
-      arrivalRate: 5
-      name: "Warm up"
-    - duration: 120
-      arrivalRate: 5
-      ramptTo: 50
-      name: "Ramp up"
-    - duration: 600
-      arrivalRate: 50
-      name: "High Load"
+    - duration: 30
+      arrivalRate: 4
+      name: "warm up"
+    - duration: 10
+      arrivalRate: 15
+      name: "high load"
+    - duration: 30
+      arrivalRate: 6
+      name: "normal load"
+    - duration: 15
+      arrivalRate: 20
+      name: "spike"
+    - duration: 20
+      arrivalRate: 3
+      name: "cool down"
   processor: "./stressTestFunctions.js"
 scenarios:
-  - name: "Page load id in first part of db"
+  - name: "Page load and get routes"
     flow:
       - get:
           url: "/"
       - get:
           url: "/bundle.js"
-      - function: "getRandomProductIdFirst"
-      - get:
-          url: "/reviews/{{ id }}/list"
-      - get:
-          url: " /reviews/{{ id }}/meta"
-      # - think: 10
-      # - post:
-      #   url: "/{{ id }}"
-      #   json:
-      #     rating: "4"
-      #     summary: "text"
-      #     body: "more text"
-      #     recommend: "true"
-      #     name: "tonytiger"
-      #     email: "tonytiger@gmail.com"
-      #     photos: "[]"
-      #     characteristics: "{1: 3}"
-  # - name: "Page load id in middle part of db and add review"
-  #   flow:
-  #     - get:
-  #         url: "/"
-  #     - get:
-  #         url: "/bundle.js"
-  #     - function: "getRandomProductIdMid"
-  #     - get:
-  #         url: "/{{ id }}/list"
-  #     - get:
-  #         url: "/{{ id }}/meta"
-  #     - think: 10
-  #     - post:
-  #       url: "/{{ id }}"
-  #       json:
-  #         rating: "4"
-  #         summary: "text"
-  #         body: "more text"
-  #         recommend: "true"
-  #         name: "tonytiger"
-  #         email: "tonytiger@gmail.com"
-  #         photos: "[]"
-  #         characteristics: "{1: 3}"
-  # - name: "Page load id in last part of db and add review"
-  #   flow:
-  #     - get:
-  #         url: "/"
-  #     - get:
-  #         url: "/bundle.js"
-  #     - function: "getRandomProductIdLast"
-  #     - get:
-  #         url: "/{{ id }}/list"
-  #     - get:
-  #         url: "/{{ id }}/meta"
-  #     - think: 10
-  #     - post:
-  #         url: "/{{ id }}"
-  #         json:
-  #           rating: "4"
-  #           summary: "text"
-  #           body: "more text"
-  #           recommend: "true"
-  #           name: "tonytiger"
-  #           email: "tonytiger@gmail.com"
-  #           photos: "[]"
-  #           characteristics: "{1: 3}"
+      - loop:
+        - function: "getRandomProductIdFirst"
+        - get:
+            url: "/reviews/{{ id }}/list"
+        - get:
+            url: "/reviews/{{ id }}/meta"
+        - function: "getRandomProductIdLast"
+        - get:
+            url: "/reviews/{{ id }}/list"
+        - get:
+            url: "/reviews/{{ id }}/meta"
+        count: 75
+
+
