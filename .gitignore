@@ -109,3 +109,6 @@ dist
 # New Relic
 newrelic_agent.log
 
+# Artillery
+artillery_report_20200717_185177.json
+
