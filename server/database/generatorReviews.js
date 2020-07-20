@@ -1,9 +1,6 @@
 const faker = require('faker');
-// const csv = require('fast-csv');
 const fs = require('fs');
 const path = require('path');
-
-let time = new Date();
 
 // generate reviews, need 10 million
 const generateReview = () => {
@@ -16,14 +13,14 @@ const generateReview = () => {
   const recommend = (booleanGenerator === 1 ? 'true' : 'false');
   const response = (booleanGenerator === 1 ? faker.lorem.sentence(5) : '');
   const body = faker.lorem.sentences(5);
-  let date = faker.date.between('2020-05-01', '2020-07-09');
+  let date = faker.date.between('2020-05-01', '2020-07-13');
   date = date.toString().slice(0, -33).concat('MDT');
   const reviewer_name = faker.internet.userName();
   const reviewer_email = faker.internet.email();
   const verified = (booleanGenerator === 1 ? 'true' : 'false');
   const helpfulness = Math.floor(Math.random() * 501);
   const helpfulness_no = Math.floor(Math.random() * 51);
-  const product_id = Math.floor(Math.random() * 20) + 1;
+  const product_id = Math.floor(Math.random() * 1000000) + 1;
 
   // return string of all the values
   return `${rating},${summary},${recommend},${response},${body},${date},${reviewer_name},${reviewer_email},${verified},${helpfulness},${helpfulness_no},${product_id},false\n`;
@@ -34,8 +31,8 @@ const seedDirectory = path.join(__dirname, 'reviews.csv');
 const writeStream = fs.createWriteStream(seedDirectory);
 
 const startWriting = (writer, encoding, done) => {
-  console.log('started writing data', time.toTimeString());
-  let i = 100;
+  console.log('started writing data', new Date().toUTCString());
+  let i = 10000000;
   function writing() {
     let canWrite = true;
     do {
@@ -60,7 +57,7 @@ writeStream.write(`rating,summary,recommend,response,body,date,reviewer_name,rev
 
 // invoke startWriting and pass in callback
 startWriting(writeStream, 'utf-8', () => {
-  console.log('finished writing data', time.toTimeString());
+  console.log('finished writing data', new Date().toUTCString());
   writeStream.end();
 });
 

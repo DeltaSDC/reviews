@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 class AddReviewTable extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       size: false,
@@ -11,16 +11,50 @@ class AddReviewTable extends Component {
       quality: false,
       length: false,
       fit: false,
-    }
+      characteristics: {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+      },
+    };
+    this.handleClick = this.handleClick.bind(this);
     this.hideRows = this.hideRows.bind(this);
+    this.updateReviewCharacteristics = this.props.updateReviewCharacteristics.bind(this);
   }
 
   componentDidMount() {
-    fetch('http://localhost:3004/reviews/5/meta')
+    fetch('http://localhost:3004/reviews/15/meta')
       .then(res => res.json())
       .then((data) => {
         this.hideRows(data);
       });
+  }
+
+  handleClick(e) {
+    const characteristics = {
+      size: 1,
+      width: 2,
+      comfort: 3,
+      quality: 4,
+      length: 5,
+      fit: 6,
+    };
+    let rating = e.target.value;
+    // console.log('char rating', rating);
+    let char = e.target.name;
+    char = characteristics[char];
+    // console.log('char id', char);
+    let charObj = {
+      [char]: rating,
+    };
+    // console.log(charObj);
+    // this.setState({
+    //   characteristics: charObj,
+    // });
+    this.updateReviewCharacteristics(charObj);
   }
 
   hideRows(data) {
@@ -28,11 +62,11 @@ class AddReviewTable extends Component {
     // console.log(dataKeys)
     let stateKeys = Object.keys(this.state);
     // console.log(stateKeys)
-    for (let i = 0; i < dataKeys.length; i++) {
+    for (let i = 0; i < dataKeys.length; i += 1) {
       if (stateKeys.includes(dataKeys[i].toLowerCase())) {
         this.setState({
           [dataKeys[i].toLowerCase()]: true,
-        })
+        });
       }
     }
   }
@@ -51,7 +85,7 @@ class AddReviewTable extends Component {
             <td>
             {/*one checkbox */}
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="SizeRadios"></input>
+              <input className="form-check-input" type="radio" value="1" id="materialUnchecked" name="size" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   A size too wide
                 </label>
@@ -59,7 +93,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="SizeRadios"></input>
+              <input className="form-check-input" type="radio" value="2" id="materialUnchecked" name="size" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   1/2 a size too big
                 </label>
@@ -67,7 +101,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="SizeRadios"></input>
+              <input className="form-check-input" type="radio" value="3" id="materialUnchecked" name="size" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Perfect
                 </label>
@@ -75,7 +109,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="SizeRadios"></input>
+              <input className="form-check-input" type="radio" value="4" id="materialUnchecked" name="size" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   1/2 a size too small
                 </label>
@@ -83,7 +117,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="SizeRadios"></input>
+              <input className="form-check-input" type="radio" value="5" id="materialUnchecked" name="size" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   A size too small
                 </label>
@@ -95,7 +129,7 @@ class AddReviewTable extends Component {
             <td>
             {/*one checkbox */}
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="WidthRadios"></input>
+              <input className="form-check-input" type="radio" value="1" id="materialUnchecked" name="width" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Too wide
                 </label>
@@ -103,7 +137,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="WidthRadios"></input>
+              <input className="form-check-input" type="radio" value="2" id="materialUnchecked" name="width" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Slightly wide
                 </label>
@@ -111,7 +145,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="WidthRadios"></input>
+              <input className="form-check-input" type="radio" value="3" id="materialUnchecked" name="width" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Perfect
                 </label>
@@ -119,7 +153,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="WidthRadios"></input>
+              <input className="form-check-input" type="radio" value="4" id="materialUnchecked" name="width" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Slightly narrow
                 </label>
@@ -127,7 +161,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="WidthRadios"></input>
+              <input className="form-check-input" type="radio" value="5" id="materialUnchecked" name="width" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Too narrow
                 </label>
@@ -139,7 +173,7 @@ class AddReviewTable extends Component {
             <td>
             {/*one checkbox */}
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="ComfortRadios"></input>
+              <input className="form-check-input" type="radio" value="1" id="materialUnchecked" name="comfort" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Perfect
                 </label>
@@ -147,7 +181,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="ComfortRadios"></input>
+              <input className="form-check-input" type="radio" value="2" id="materialUnchecked" name="comfort" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Comfortable
                 </label>
@@ -155,7 +189,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="ComfortRadios"></input>
+              <input className="form-check-input" type="radio" value="3" id="materialUnchecked" name="comfort" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Ok
                 </label>
@@ -163,7 +197,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="ComfortRadios"></input>
+              <input className="form-check-input" type="radio" value="4" id="materialUnchecked" name="comfort" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Slightly uncomfortable
                 </label>
@@ -171,7 +205,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="ComfortRadios"></input>
+              <input className="form-check-input" type="radio" value="5" id="materialUnchecked" name="comfort" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Uncomfortable
                 </label>
@@ -183,7 +217,7 @@ class AddReviewTable extends Component {
             <td>
             {/*one checkbox */}
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="QualityRadios"></input>
+              <input className="form-check-input" type="radio" value="1" id="materialUnchecked" name="quality" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Perfect
                 </label>
@@ -191,7 +225,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="QualityRadios"></input>
+              <input className="form-check-input" type="radio" value="2" id="materialUnchecked" name="quality" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Pretty great
                 </label>
@@ -199,7 +233,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="QualityRadios"></input>
+              <input className="form-check-input" type="radio" value="3" id="materialUnchecked" name="quality" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   What I expected
                 </label>
@@ -207,7 +241,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="QualityRadios"></input>
+              <input className="form-check-input" type="radio" value="4" id="materialUnchecked" name="quality" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Below average
                 </label>
@@ -215,7 +249,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="QualityRadios"></input>
+              <input className="form-check-input" type="radio" value="5" id="materialUnchecked" name="quality" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Poor
                 </label>
@@ -227,7 +261,7 @@ class AddReviewTable extends Component {
             <td>
             {/*one checkbox */}
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="LengthRadios"></input>
+              <input className="form-check-input" type="radio" value="1" id="materialUnchecked" name="length" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Runs long
                 </label>
@@ -235,7 +269,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="LengthRadios"></input>
+              <input className="form-check-input" type="radio" value="2" id="materialUnchecked" name="length" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Runs slightly long
                 </label>
@@ -243,7 +277,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="LengthRadios"></input>
+              <input className="form-check-input" type="radio" value="3" id="materialUnchecked" name="length" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Perfect
                 </label>
@@ -251,7 +285,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="LengthRadios"></input>
+              <input className="form-check-input" type="radio" value="4" id="materialUnchecked" name="length" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Runs slightly short
                 </label>
@@ -259,7 +293,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="LengthRadios"></input>
+              <input className="form-check-input" type="radio" value="5" id="materialUnchecked" name="length" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Runs short
                 </label>
@@ -271,7 +305,7 @@ class AddReviewTable extends Component {
             <td>
             {/*one checkbox */}
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="FitRadios"></input>
+              <input className="form-check-input" type="radio" value="1" id="materialUnchecked" name="fit" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Runs long
                 </label>
@@ -279,7 +313,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="FitRadios"></input>
+              <input className="form-check-input" type="radio" value="2" id="materialUnchecked" name="fit" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Runs slightly long
                 </label>
@@ -287,7 +321,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="FitRadios"></input>
+              <input className="form-check-input" type="radio" value="3" id="materialUnchecked" name="fit" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Perfect
                 </label>
@@ -295,7 +329,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="FitRadios"></input>
+              <input className="form-check-input" type="radio" value="4" id="materialUnchecked" name="fit" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Runs slightly tight
                 </label>
@@ -303,7 +337,7 @@ class AddReviewTable extends Component {
             </td>
             <td>
             <div className="form-check">
-              <input className="form-check-input" type="radio" value="" id="materialUnchecked" name="FitRadios"></input>
+              <input className="form-check-input" type="radio" value="5" id="materialUnchecked" name="fit" onClick={this.handleClick}></input>
                 <label className="form-check-label" htmlFor="materialUnchecked">
                   Runs tight
                 </label>

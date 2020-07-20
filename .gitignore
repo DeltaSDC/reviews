@@ -106,4 +106,24 @@ dist
 # Dataset
 *.csv
 
+# New Relic
+newrelic_agent.log
+
+# Artillery
+artillery_report_20200717_185177.json
+artillery_report_20200718_094445.json
+artillery_report_20200718_100609.json
+artillery_report_20200718_103754.json
+artillery_report_20200718_112052.json
+artillery_report_20200718_112904.json
+artillery_report_20200718_114096.json
+artillery_report_20200718_114544.json
+artillery_report_20200718_115045.json
+artillery_report_20200718_115449.json
+artillery_report_20200718_133325.json
+artillery_report_20200718_133967.json
+artillery_report_20200718_134525.json
+artillery_report_20200718_135420.json
+artillery_report_20200718_141469.json
+artillery_report_20200718_143100.json
 

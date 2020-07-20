@@ -15,7 +15,7 @@ class AttributeGraph extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3004/reviews/5/meta')
+    fetch('http://localhost:3004/reviews/15/meta')
       .then(res => res.json())
       .then((data) => {
         // console.log(data);
@@ -32,7 +32,7 @@ class AttributeGraph extends Component {
     // console.log('statekeys from attribute', stateKeys);
     for (let i = 0; i < dataKeys.length; i++) {
       if (stateKeys.includes(dataKeys[i].toLowerCase())) {
-        console.log(data.characteristics[dataKeys[i]].value);
+        // console.log(data.characteristics[dataKeys[i]].value);
         let widthPercent = ((Number(data.characteristics[dataKeys[i]].value) / 5) * 100);
         widthPercent = `${widthPercent}%`;
         this.setState({
@@ -43,7 +43,7 @@ class AttributeGraph extends Component {
   }
 
   render() {
-    // console.log(this.state);
+    // console.log('state in attribute', this.state);
     let { size, width, comfort, quality, length, fit } = this.state;
     let stateKeys = Object.keys(this.state);
     return (
@@ -51,7 +51,7 @@ class AttributeGraph extends Component {
           <div className="size-graph" style={ size ? {display: 'block'} : {display : 'none'} }>
             <div className="attr-label">Size</div>
             <div className="attr-outer">
-              <img className="attr-breakdown-size" height="5%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Black_triangle.svg/1200px-Black_triangle.svg.png"></img>
+              <img className="attr-breakdown-size" style={ size ? {left: size} : {display : 'none'} } height="5%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Black_triangle.svg/1200px-Black_triangle.svg.png"></img>
             </div>
             <div className="left-to-right-explanation"><span className="too-small">too small</span><span> perfect </span><span className="too-wide">too wide</span></div>
           </div>

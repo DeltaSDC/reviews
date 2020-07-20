@@ -12,11 +12,13 @@ class AddReviewStars extends React.Component {
       selected5: "fa fa-star-o fa-2x rating-star",
       explainMessage: "",
       clicked: false,
-    }
+      selectedRating: '',
+    };
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.starExplain = this.starExplain.bind(this)
+    this.starExplain = this.starExplain.bind(this);
+    this.updateRating = this.props.updateRating.bind(this);
   }
 
   onMouseOver(e) {
@@ -47,11 +49,14 @@ class AddReviewStars extends React.Component {
   }
 
   onClick(e) {
-    console.log(e.target.id.substring(7, 8))
+    // console.log(e.target.id.substring(7, 8));
+    let rating = e.target.id.substring(7, 8);
     this.setState({
       clicked: !this.state.clicked,
-    })
+      selectedRating: rating,
+    });
     this.onMouseOver(e);
+    this.updateRating(rating);
   }
 
   starExplain() {

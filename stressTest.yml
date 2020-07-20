@@ -1,0 +1,40 @@
+config:
+  target: "http://localhost:3004"
+  phases:
+    - duration: 30
+      arrivalRate: 4
+      name: "warm up"
+    - duration: 10
+      arrivalRate: 15
+      name: "high load"
+    - duration: 30
+      arrivalRate: 6
+      name: "normal load"
+    - duration: 15
+      arrivalRate: 20
+      name: "spike"
+    - duration: 20
+      arrivalRate: 3
+      name: "cool down"
+  processor: "./stressTestFunctions.js"
+scenarios:
+  - name: "Page load and get routes"
+    flow:
+      - get:
+          url: "/"
+      - get:
+          url: "/bundle.js"
+      - loop:
+        - function: "getRandomProductIdFirst"
+        - get:
+            url: "/reviews/{{ id }}/list"
+        - get:
+            url: "/reviews/{{ id }}/meta"
+        - function: "getRandomProductIdLast"
+        - get:
+            url: "/reviews/{{ id }}/list"
+        - get:
+            url: "/reviews/{{ id }}/meta"
+        count: 75
+
+
