@@ -25,16 +25,11 @@ scenarios:
       - get:
           url: "/bundle.js"
       - loop:
-        - function: "getRandomProductIdFirst"
+        - function: "getRandomFromList"
         - get:
             url: "/reviews/{{ id }}/list"
         - get:
             url: "/reviews/{{ id }}/meta"
-        - function: "getRandomProductIdLast"
-        - get:
-            url: "/reviews/{{ id }}/list"
-        - get:
-            url: "/reviews/{{ id }}/meta"
-        count: 75
+        count: 30
 
 
