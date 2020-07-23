@@ -3,22 +3,44 @@ const path = require('path');
 const reviewData = require('../sampleData.js');
 const model = require('../models/models.js');
 const helpers = require('./helperFunctions.js');
+const cache = require('../cache/index.js');
 
 // get a review list
 const getReviewList = (req, res) => {
   console.log(req.params);
-  const { product_id, page, count, sort } = req.params;
-  model.getReviewList(product_id, (err, results) => {
-    if (err) {
-      console.log('error getting review list');
-      res.status(404);
-    } else {
-      console.log('got review list');
+  const {
+    product_id,
+    page,
+    count,
+    sort,
+  } = req.params;
+  cache.getFromCache(product_id, (error, resultsCache) => {
+    if (error) {
+      console.log('error getting from cache');
+    }
+    if (resultsCache !== null) {
+      console.log('got data from cache');
       res.status(200).json({
         product: product_id,
         page,
         count,
-        results,
+        results: JSON.parse(resultsCache),
+      });
+    } else {
+      model.getReviewList(product_id, (err, results) => {
+        if (err) {
+          console.log('error getting review list');
+          res.status(404);
+        } else {
+          console.log('got review list');
+          cache.addToCache(product_id, results);
+          res.status(200).json({
+            product: product_id,
+            page,
+            count,
+            results,
+          });
+        }
       });
     }
   });

@@ -11,6 +11,10 @@ const dev = {
     port: parseInt(process.env.DEV_DB_PORT, 10) || 5432,
     database: process.env.DEV_DB_NAME || 'reviews_service',
   },
+  cache: {
+    port: parseInt(process.env.DEV_CACHE_PORT, 10) || 6379,
+    host: process.env.DEV_CACHE_HOST || 'localhost',
+  },
 };
 
 const prod = {
@@ -23,6 +27,10 @@ const prod = {
     database: process.env.PROD_DB_NAME || 'reviews_service',
     user: process.env.PGUSER,
     password: process.env.PG_AWS_PASSWORD,
+  },
+  cache: {
+    port: parseInt(process.env.PROD_CACHE_PORT, 10) || 6379,
+    host: process.env.PROD_CACHE_HOST || 'cache',
   },
 };
 

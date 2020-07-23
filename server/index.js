@@ -7,6 +7,8 @@ const morgan = require('morgan');
 const router = require('./routes/routes.js');
 
 const PORT = config.app.port;
+
+// create express app instance
 const app = express();
 
 // middleware

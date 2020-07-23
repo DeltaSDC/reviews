@@ -127,3 +127,5 @@ artillery_report_20200718_135420.json
 artillery_report_20200718_141469.json
 artillery_report_20200718_143100.json
 
+# Redis
+dump.rdb
