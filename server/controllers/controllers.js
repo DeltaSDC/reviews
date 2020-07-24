@@ -21,12 +21,7 @@ const getReviewList = (req, res) => {
     }
     if (resultsCache !== null) {
       console.log('got data from cache');
-      res.status(200).json({
-        product: product_id,
-        page,
-        count,
-        results: JSON.parse(resultsCache),
-      });
+      res.status(200).json(JSON.parse(resultsCache));
     } else {
       model.getReviewList(product_id, (err, results) => {
         if (err) {
@@ -65,7 +60,7 @@ const getReviewMetadata = (req, res) => {
       console.log('error getting from cache');
     }
     if (resultsCache !== null) {
-      console.log('got data from cache', resultsCache);
+      console.log('got data from cache');
       res.status(200).json(JSON.parse(resultsCache));
     } else {
       model.getRatings(product_id, (err, results) => {

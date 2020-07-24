@@ -21,6 +21,9 @@ app.use(express.static('public'));
 
 // router
 app.use('/reviews', router);
+app.get('/loaderio-f6a558ff042a291b7c33f7feb53905d2/', (req, res) => {
+  res.status(200).send('loaderio-f6a558ff042a291b7c33f7feb53905d2');
+});
 
 // create server on port 3004
 app.listen(PORT, () => {
