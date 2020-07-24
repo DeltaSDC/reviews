@@ -65,7 +65,7 @@ class AddReview extends React.Component {
       characteristics: charObj,
     };
     console.log(data);
-    fetch('http://localhost:3004/reviews/15', {
+    fetch('reviews/15', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

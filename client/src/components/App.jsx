@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3004/reviews/15/list')
+    fetch('reviews/15/list')
       .then(res => res.json())
       .then((data) => {
         console.log(data.results);
